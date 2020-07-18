@@ -1,0 +1,24 @@
+{
+  "backdrop_path": "/ynMYRX3G4JJ2dioLudZNc7oFKd.jpg",
+  "genres": [
+    {
+      "id": 28,
+      "name": "Ação"
+    },
+    {
+      "id": 53,
+      "name": "Thriller"
+    },
+    {
+      "id": 80,
+      "name": "Crime"
+    }
+  ],
+  "homepage": "https://www.netflix.com/title/81108579",
+  "id": 706503,
+  "overview": "Um mecânico acusado de assassinato precisa encontrar o carro que contém a única prova de sua inocência: a bala do crime.",
+  "release_date": "2020-06-19",
+  "runtime": 92,
+  "title": "Bala Perdida",
+  "vote_average": 6.8
+}
