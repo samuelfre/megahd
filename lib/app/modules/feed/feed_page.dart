@@ -7,7 +7,7 @@ import 'feed_controller.dart';
 
 class FeedPage extends StatefulWidget {
   final String title;
-  const FeedPage({Key key, this.title = "Feed"}) : super(key: key);
+  const FeedPage({Key key, this.title = "Filmes Populares"}) : super(key: key);
 
   @override
   _FeedPageState createState() => _FeedPageState();
@@ -24,17 +24,17 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
   Widget build(BuildContext context) {
     return Scaffold(
         bottomNavigationBar: Modular.get<AdsController>().showBanner(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(
-            Icons.filter_list,
-            size: 50,
-            color: Theme.of(context).accentColor,
-          ),
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          splashColor: Colors.black,
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {},
+        //   child: Icon(
+        //     Icons.filter_list,
+        //     size: 50,
+        //     color: Theme.of(context).accentColor,
+        //   ),
+        //   elevation: 0,
+        //   backgroundColor: Colors.transparent,
+        //   splashColor: Colors.black,
+        // ),
         // drawer: CustomDrawer(),
         appBar: AppBar(
           title: Text(

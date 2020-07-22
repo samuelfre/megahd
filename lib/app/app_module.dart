@@ -1,3 +1,4 @@
+import 'pages/yt_movie/yt_movie_controller.dart';
 import 'package:megahd/app/app_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:megahd/app/shared/ads_controller.dart';
 class AppModule extends MainModule {
   @override
   List<Bind> get binds => [
+        Bind((i) => YtMovieController()),
         Bind((i) => AdsController()),
         Bind((i) => AppController()),
       ];

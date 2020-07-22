@@ -9,6 +9,14 @@ part of 'main_movie_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$MainMovieController on _MainMovieControllerBase, Store {
+  Computed<List<dynamic>> _$listaComentariosComputed;
+
+  @override
+  List<dynamic> get listaComentarios => (_$listaComentariosComputed ??=
+          Computed<List<dynamic>>(() => super.listaComentarios,
+              name: '_MainMovieControllerBase.listaComentarios'))
+      .value;
+
   final _$movieAtom = Atom(name: '_MainMovieControllerBase.movie');
 
   @override
@@ -39,18 +47,49 @@ mixin _$MainMovieController on _MainMovieControllerBase, Store {
     });
   }
 
-  final _$responseAtom = Atom(name: '_MainMovieControllerBase.response');
+  final _$movieModelAtom = Atom(name: '_MainMovieControllerBase.movieModel');
 
   @override
-  ParseResponse get response {
-    _$responseAtom.reportRead();
-    return super.response;
+  MovieModel get movieModel {
+    _$movieModelAtom.reportRead();
+    return super.movieModel;
   }
 
   @override
-  set response(ParseResponse value) {
-    _$responseAtom.reportWrite(value, super.response, () {
-      super.response = value;
+  set movieModel(MovieModel value) {
+    _$movieModelAtom.reportWrite(value, super.movieModel, () {
+      super.movieModel = value;
+    });
+  }
+
+  final _$ficarNuloAtom = Atom(name: '_MainMovieControllerBase.ficarNulo');
+
+  @override
+  bool get ficarNulo {
+    _$ficarNuloAtom.reportRead();
+    return super.ficarNulo;
+  }
+
+  @override
+  set ficarNulo(bool value) {
+    _$ficarNuloAtom.reportWrite(value, super.ficarNulo, () {
+      super.ficarNulo = value;
+    });
+  }
+
+  final _$_listaComentariosAtom =
+      Atom(name: '_MainMovieControllerBase._listaComentarios');
+
+  @override
+  ObservableList<dynamic> get _listaComentarios {
+    _$_listaComentariosAtom.reportRead();
+    return super._listaComentarios;
+  }
+
+  @override
+  set _listaComentarios(ObservableList<dynamic> value) {
+    _$_listaComentariosAtom.reportWrite(value, super._listaComentarios, () {
+      super._listaComentarios = value;
     });
   }
 
@@ -91,8 +130,10 @@ mixin _$MainMovieController on _MainMovieControllerBase, Store {
     return '''
 movie: ${movie},
 credits: ${credits},
-response: ${response},
-apiStatus: ${apiStatus}
+movieModel: ${movieModel},
+ficarNulo: ${ficarNulo},
+apiStatus: ${apiStatus},
+listaComentarios: ${listaComentarios}
     ''';
   }
 }

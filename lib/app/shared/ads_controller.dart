@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
@@ -13,17 +13,6 @@ part 'ads_controller.g.dart';
 class AdsController = _AdsControllerBase with _$AdsController;
 
 abstract class _AdsControllerBase extends Disposable with Store {
-  /// NÃO ALTERAR
-  @observable
-  int adBannerToShow = 0;
-
-  /// NÃO ALTERAR || DONT REMOVE AND FUTRICATION
-  /// NÃO ALTERAR
-  @action
-  void updateAdBannerToShow(int nState) => adBannerToShow = nState;
-
-  /// NÃO ALTERAR
-
   /*** AdsController Criado para aumentar a monetização e deixar você ricão ***/
   ///
   /// 0 MONETIZAÇÃO DESATIVADA
@@ -34,19 +23,16 @@ abstract class _AdsControllerBase extends Disposable with Store {
   ///
   /// 6 STARTAPP
   ///
-
   int adsType = 0;
   int timeToShow = 10;
   bool forceRepeatAdnetwork = true;
 
   /// Strings dos anuncios
   /// Admob ID's
-  static String admobAppId =
-      Platform.isAndroid ? "ca-app-pub-3940256099942544~3347511713" : "";
+  static String admobAppId = Platform.isAndroid ? FirebaseAdMob.testAppId : "";
   static String admobInterstitialId =
-      Platform.isAndroid ? "ca-app-pub-3940256099942544/1033173712" : "";
-  static String admobBannerId =
-      Platform.isAndroid ? "ca-app-pub-3940256099942544/6300978111" : "";
+      Platform.isAndroid ? InterstitialAd.testAdUnitId : "";
+  static String admobBannerId = Platform.isAndroid ? BannerAd.testAdUnitId : "";
 
   /// Facebook ID's
   static String faceInterstitialId = Platform.isAndroid
@@ -59,6 +45,16 @@ abstract class _AdsControllerBase extends Disposable with Store {
   /// NÃO FUTRICAR NESSAS VAR'S
   InterstitialAd admobInterstitial;
 
+  /// NÃO ALTERAR
+  @observable
+  int adBannerToShow = 0;
+
+  /// NÃO ALTERAR || DONT REMOVE AND FUTRICATION
+  /// NÃO ALTERAR
+  @action
+  void updateAdBannerToShow(int nState) => adBannerToShow = nState;
+
+  /// NÃO ALTERAR
   /// defaultNetwork (0: nenhum | 3: admob | 4: facebook) NÃO MEXER || DONT REMOVE
   int defaultNetwork = 0;
   Timer timer;
@@ -74,7 +70,6 @@ abstract class _AdsControllerBase extends Disposable with Store {
   updateShowInterstitialTimer(bool nState) => showInterstitialTimer = nState;
 
   /// É IMUTAVÉL EM MISERAVEL...
-
   static BannerAd admobBanner;
   static FacebookBannerAd facebookBanner;
 
@@ -399,23 +394,65 @@ abstract class _AdsControllerBase extends Disposable with Store {
     }
   }
 
-  Widget showBanner() => Observer(builder: (context) {
-        debugPrint("mobX calling Observer");
+  Widget showBanner(
+          {Widget widgetNavigation,
+          double heightNavigation = kBottomNavigationBarHeight}) =>
+      Observer(builder: (context) {
         return adBannerToShow != 0
             ? Container(
-                height: adBannerToShow == 4 ? 50 : 100,
-                child: adBannerToShow == 4
-                    ? facebookBanner
-                    : Container(
-                        width: 0,
-                        height: 0,
-                      ),
+                height: widgetNavigation != null
+                    ? heightNavigation
+                    : 0 +
+                        (adBannerToShow == 4
+                            ? 50
+                            : getMargin(MediaQuery.of(context).size.height)),
+                child: Column(
+                  children: <Widget>[
+                    widgetNavigation ??
+                        Container(
+                          width: 0,
+                          height: 0,
+                        ),
+                    Container(
+                      height: adBannerToShow == 4
+                          ? 50
+                          : getMargin(MediaQuery.of(context).size.height),
+                      child: adBannerToShow == 4
+                          ? facebookBanner
+                          : Container(
+                              width: 0,
+                              height: 0,
+                            ),
+                    ),
+                  ],
+                ),
               )
             : Container(
-                width: 0,
-                height: 0,
+                height: heightNavigation,
+                child: Column(
+                  children: <Widget>[
+                    widgetNavigation ??
+                        Container(
+                          width: 0,
+                          height: 0,
+                        ),
+                  ],
+                ),
               );
       });
+
+  double getMargin(double height) {
+    double margin;
+
+    if (height <= 400) {
+      margin = 37;
+    } else if (height >= 400 && height < 720) {
+      margin = 55;
+    } else if (height >= 720) {
+      margin = 95;
+    }
+    return margin;
+  }
 
   @override
   void dispose() {

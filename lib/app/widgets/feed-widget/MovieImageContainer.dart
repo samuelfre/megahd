@@ -13,8 +13,10 @@ class MovieImageContainer extends StatelessWidget {
       child: Container(
         width: double.infinity,
         child: Image(
-          image: NetworkImage(pathBackImageMovie +
-              controller.trends.results[index].backdropPath),
+          image: controller.trends.results[index].backdropPath != null
+              ? NetworkImage(pathBackImageMovie +
+                  controller.trends.results[index].backdropPath)
+              : AssetImage('assets/img2.jpg'),
           fit: BoxFit.fill,
         ),
       ),
