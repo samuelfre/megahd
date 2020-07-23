@@ -93,6 +93,23 @@ mixin _$MainMovieController on _MainMovieControllerBase, Store {
     });
   }
 
+  final _$youtubePlayerControllerAtom =
+      Atom(name: '_MainMovieControllerBase.youtubePlayerController');
+
+  @override
+  YoutubePlayerController get youtubePlayerController {
+    _$youtubePlayerControllerAtom.reportRead();
+    return super.youtubePlayerController;
+  }
+
+  @override
+  set youtubePlayerController(YoutubePlayerController value) {
+    _$youtubePlayerControllerAtom
+        .reportWrite(value, super.youtubePlayerController, () {
+      super.youtubePlayerController = value;
+    });
+  }
+
   final _$apiStatusAtom = Atom(name: '_MainMovieControllerBase.apiStatus');
 
   @override
@@ -132,6 +149,7 @@ movie: ${movie},
 credits: ${credits},
 movieModel: ${movieModel},
 ficarNulo: ${ficarNulo},
+youtubePlayerController: ${youtubePlayerController},
 apiStatus: ${apiStatus},
 listaComentarios: ${listaComentarios}
     ''';

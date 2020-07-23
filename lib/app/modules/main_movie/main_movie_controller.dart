@@ -8,6 +8,7 @@ import 'package:megahd/app/repositories/credits-rep.dart';
 import 'package:megahd/app/repositories/movies-rep.dart';
 import 'package:megahd/app/repositories/movies-video.dart';
 import 'package:megahd/app/widgets/main-movie-widget/ComentariosTab.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
@@ -28,6 +29,9 @@ abstract class _MainMovieControllerBase with Store {
 
   @observable
   ObservableList<dynamic> _listaComentarios = ObservableList<dynamic>.of([]);
+
+  @observable
+  YoutubePlayerController youtubePlayerController;
 
   @observable
   ApiStatus apiStatus = ApiStatus.Loading;
