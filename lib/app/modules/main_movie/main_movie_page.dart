@@ -8,8 +8,8 @@ import 'package:megahd/app/shared/tamanhoTela.dart';
 import 'package:megahd/app/widgets/main-movie-widget/ComentariosTab.dart';
 import 'package:megahd/app/widgets/main-movie-widget/TabCredits.dart';
 import 'package:megahd/app/widgets/main-movie-widget/TabInfo.dart';
+import 'package:rate_app_dialog/rate_app_dialog.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-//import 'package:megahd/app/repositories/movies-video.dart';
 import 'main_movie_controller.dart';
 
 class MainMoviePage extends StatefulWidget {
@@ -42,6 +42,7 @@ class _MainMoviePageState
     Tab(text: 'TRAILER'),
   ]; //Declarando as tabs
 
+  ///Serve pra chamar a tab de info
   Widget get tabInfo => controller?.movie != null
       ? SingleChildScrollView(
           child: TabInfo(
@@ -390,6 +391,13 @@ class _MainMoviePageState
 
   @override
   void initState() {
+    RateAppDialog(
+            context: context,
+            afterStarRedirect: true,
+            customDialogIOS: true,
+            minimeRequestToShow: minValueToShow,
+            minimeRateIsGood: 4)
+        .requestRate();
     textEditingController1 = TextEditingController();
     textEditingController2 = TextEditingController();
     tabController = TabController(

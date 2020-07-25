@@ -8,5 +8,6 @@ const String keyApplicationId = 'G1Wh9NtMmTre6I9nW8MUJP65kcif4nj1Gz9lzcWY';
 const String keyParseServerUrl = 'https://parseapi.back4app.com';
 const String clientKey = '76nwcRHEC1uCZfQXXj96Yyu3LgLZL0nu0a0tldGF';
 const String masterKey = 'rBoGj15bM5qlxanq9cQZ8DvlVZmTdtZjk38c8UUA';
+const int minValueToShow = 12;
 
 //const String language = "pt-BR";

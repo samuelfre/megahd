@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:megahd/app/shared/ads_controller.dart';
+import 'package:megahd/app/shared/constants.dart';
 import 'package:megahd/app/widgets/feed-widget/CustomCard.dart';
+import 'package:rate_app_dialog/rate_app_dialog.dart';
 import 'feed_controller.dart';
 
 class FeedPage extends StatefulWidget {
@@ -16,6 +18,13 @@ class FeedPage extends StatefulWidget {
 class _FeedPageState extends ModularState<FeedPage, FeedController> {
   @override
   void initState() {
+    RateAppDialog(
+            context: context,
+            afterStarRedirect: true,
+            customDialogIOS: true,
+            minimeRequestToShow: minValueToShow,
+            minimeRateIsGood: 4)
+        .requestRate();
     controller.getTrends();
     super.initState();
   }

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:megahd/app/modules/main_movie/main_movie_controller.dart';
 import 'package:megahd/app/shared/tamanhoTela.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum ApiStatus { Loading, Empty, Completed }
 
@@ -14,19 +15,86 @@ class ComentariosTab extends StatelessWidget {
   final TextEditingController textEditingController2;
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> scaffoldKey;
+
   ComentariosTab(
       {this.textEditingController1,
       this.textEditingController2,
       this.scaffoldKey});
 
   enviarComentario() async {
-    var dietPlan = ParseObject('Comentarios')
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var object = ParseObject('Comentarios')
       ..set('Nick', '${textEditingController1.text}')
       ..set('Comentario', '${textEditingController2.text}')
-      ..set('FilmeId', controller.movie.id);
-    await dietPlan
+      ..set('FilmeId', controller.movie.id)
+      ..set('idDispositivo', prefs.get('id').toString());
+    await object
         .save()
         .then((value) => controller.getComentarios(id: controller.movie.id));
+  }
+
+  upVote(int index) async {
+    String objectId = controller.listaComentarios[index]['objectId'];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (controller.listaComentarios[index]['listVoted'] != null) {
+      List lista = List.from(controller.listaComentarios[index]['listVoted']);
+      if (!lista.contains(prefs.get('id'))) {
+        int votes = controller.listaComentarios[index]['Pvote'] + 1;
+        var object = ParseObject('Comentarios')
+          ..objectId = objectId
+          ..set('Pvote', votes)
+          ..setAdd('listVoted', prefs.get('id'));
+        await object.save().then(
+            (value) => controller.getComentarios(id: controller.movie.id));
+      } else {
+        debugPrint('ja votou');
+      }
+    } else {
+      int votes = controller.listaComentarios[index]['Pvote'] + 1;
+      var object = ParseObject('Comentarios')
+        ..objectId = objectId
+        ..set('Pvote', votes)
+        ..setAdd('listVoted', prefs.get('id'));
+      await object
+          .save()
+          .then((value) => controller.getComentarios(id: controller.movie.id));
+    }
+  }
+
+  downVote(int index) async {
+    String objectId = controller.listaComentarios[index]['objectId'];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (controller.listaComentarios[index]['listVoted'] != null) {
+      List lista = List.from(controller.listaComentarios[index]['listVoted']);
+      if (!lista.contains(prefs.get('id'))) {
+        int votes = controller.listaComentarios[index]['Nvote'] + 1;
+        if (votes > 15) {
+          debugPrint('entrou aqui rapaz ');
+          var object = ParseObject('Comentarios')
+            ..objectId = objectId
+            ..set('Ativo', false);
+          await object.save().then(
+              (value) => controller.getComentarios(id: controller.movie.id));
+        }
+        var object = ParseObject('Comentarios')
+          ..objectId = objectId
+          ..set('Nvote', votes)
+          ..setAdd('listVoted', prefs.get('id'));
+        await object.save().then(
+            (value) => controller.getComentarios(id: controller.movie.id));
+      } else {
+        debugPrint('ja votou');
+      }
+    } else {
+      int votes = controller.listaComentarios[index]['Nvote'] + 1;
+      var object = ParseObject('Comentarios')
+        ..objectId = objectId
+        ..set('Nvote', votes)
+        ..setAdd('listVoted', prefs.get('id'));
+      await object
+          .save()
+          .then((value) => controller.getComentarios(id: controller.movie.id));
+    }
   }
 
   Widget pegarData(int index) {
@@ -69,7 +137,66 @@ class ComentariosTab extends StatelessWidget {
                             )),
                         Align(
                             alignment: Alignment.bottomRight,
-                            child: pegarData(index)),
+                            child: Column(
+                              children: <Widget>[
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Align(
+                                    alignment: Alignment.centerRight,
+                                    child: pegarData(index)),
+                                SizedBox(
+                                  //PRO FUTUROOOO RSRS
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width: TamanhoTela(0.08, context)
+                                          .converterWidth(),
+                                    ),
+                                    //---------------------------------------------------------------
+                                    IconButton(
+                                        icon: Icon(Icons.thumb_up),
+                                        onPressed: () => upVote((controller
+                                                    .listaComentarios.length -
+                                                1) -
+                                            index)),
+                                    Text(controller.listaComentarios[(controller
+                                                    .listaComentarios.length -
+                                                1) -
+                                            index]['Pvote']
+                                        .toString()),
+                                    Container(
+                                      width: 10,
+                                      height: 30,
+                                      child: VerticalDivider(
+                                        thickness: 1.5,
+                                      ),
+                                    ),
+                                    IconButton(
+                                        enableFeedback: true,
+                                        icon: Icon(Icons.thumb_down),
+                                        onPressed: () => downVote((controller
+                                                    .listaComentarios.length -
+                                                1) -
+                                            index)),
+                                    Text(controller.listaComentarios[(controller
+                                                    .listaComentarios.length -
+                                                1) -
+                                            index]['Nvote']
+                                        .toString()),
+                                    //---------------------------------------------------------------
+                                    SizedBox(
+                                      width: TamanhoTela(0.08, context)
+                                          .converterWidth(),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            )),
                       ],
                     ),
                   ),
