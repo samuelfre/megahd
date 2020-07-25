@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:megahd/app/models/credits.dart';
 import 'package:megahd/app/models/movie.dart';
@@ -15,6 +14,7 @@ import 'package:parse_server_sdk/parse_server_sdk.dart';
 part 'main_movie_controller.g.dart';
 
 class MainMovieController = _MainMovieControllerBase with _$MainMovieController;
+enum Trailer { comTrailer, semTrailer }
 
 abstract class _MainMovieControllerBase with Store {
   @observable
@@ -32,6 +32,12 @@ abstract class _MainMovieControllerBase with Store {
 
   @observable
   YoutubePlayerController youtubePlayerController;
+  @observable
+  PlayerState playerState;
+  @observable
+  YoutubeMetaData videoMetaData;
+  @observable
+  Trailer trailer;
 
   @observable
   ApiStatus apiStatus = ApiStatus.Loading;
@@ -47,8 +53,6 @@ abstract class _MainMovieControllerBase with Store {
   @action
   Future<void> initMovie({int index, String language = "pt-BR"}) async {
     //Iniciando o Model com o método do repositório
-    debugPrint(index.toString());
-    debugPrint(feedController.trends.results[index].id.toString());
     movie = await movieRep.getMovie(
         id: feedController.trends.results[index].id.toString(),
         language: language);
@@ -69,7 +73,6 @@ abstract class _MainMovieControllerBase with Store {
     ParseResponse response = await queryBuilder.query();
 
     if (response.success) {
-      debugPrint("list: ${response.results.toString()}");
       if (response.results.isEmpty) {
         apiStatus = ApiStatus.Empty;
       } else {
@@ -80,8 +83,6 @@ abstract class _MainMovieControllerBase with Store {
           }
         }
         _listaComentarios.addAll(listResultos);
-
-        debugPrint("_listaComentario: ${_listaComentarios.toString()}");
         if (_listaComentarios.isNotEmpty)
           apiStatus = ApiStatus.Completed;
         else if (_listaComentarios.isEmpty) apiStatus = ApiStatus.Empty;

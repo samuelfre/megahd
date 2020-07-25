@@ -111,7 +111,6 @@ abstract class _AdsControllerBase extends Disposable with Store {
 
           if (result == BannerAdResult.ERROR) {
             tryRequestAd = tryRequestAd++;
-            debugPrint('Chegou aqui e o anúncio falhou');
             updateAdBannerToShow(0);
             if (adsType == 3 || adsType == 4) {
               if (forceRepeatAdnetwork) failRequestBannerFace = true;

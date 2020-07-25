@@ -110,6 +110,52 @@ mixin _$MainMovieController on _MainMovieControllerBase, Store {
     });
   }
 
+  final _$playerStateAtom = Atom(name: '_MainMovieControllerBase.playerState');
+
+  @override
+  PlayerState get playerState {
+    _$playerStateAtom.reportRead();
+    return super.playerState;
+  }
+
+  @override
+  set playerState(PlayerState value) {
+    _$playerStateAtom.reportWrite(value, super.playerState, () {
+      super.playerState = value;
+    });
+  }
+
+  final _$videoMetaDataAtom =
+      Atom(name: '_MainMovieControllerBase.videoMetaData');
+
+  @override
+  YoutubeMetaData get videoMetaData {
+    _$videoMetaDataAtom.reportRead();
+    return super.videoMetaData;
+  }
+
+  @override
+  set videoMetaData(YoutubeMetaData value) {
+    _$videoMetaDataAtom.reportWrite(value, super.videoMetaData, () {
+      super.videoMetaData = value;
+    });
+  }
+
+  final _$trailerAtom = Atom(name: '_MainMovieControllerBase.trailer');
+
+  @override
+  Trailer get trailer {
+    _$trailerAtom.reportRead();
+    return super.trailer;
+  }
+
+  @override
+  set trailer(Trailer value) {
+    _$trailerAtom.reportWrite(value, super.trailer, () {
+      super.trailer = value;
+    });
+  }
+
   final _$apiStatusAtom = Atom(name: '_MainMovieControllerBase.apiStatus');
 
   @override
@@ -150,6 +196,9 @@ credits: ${credits},
 movieModel: ${movieModel},
 ficarNulo: ${ficarNulo},
 youtubePlayerController: ${youtubePlayerController},
+playerState: ${playerState},
+videoMetaData: ${videoMetaData},
+trailer: ${trailer},
 apiStatus: ${apiStatus},
 listaComentarios: ${listaComentarios}
     ''';
