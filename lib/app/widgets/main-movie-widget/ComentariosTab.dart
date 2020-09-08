@@ -269,6 +269,7 @@ class ComentariosTab extends StatelessWidget {
           ),
         ],
       );
+
   Future<void> _showMyDialog(BuildContext context) async {
     return showDialog<void>(
       context: context,
@@ -306,9 +307,11 @@ class ComentariosTab extends StatelessWidget {
       builder: (BuildContext context) {
         switch (controller.apiStatus) {
           case ApiStatus.Completed:
+            debugPrint('Entrou no Completed...');
             return retornarLista(context);
             break;
           case ApiStatus.Empty:
+            debugPrint('Entrou no Empty...');
             return Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: ListView(
@@ -335,8 +338,26 @@ class ComentariosTab extends StatelessWidget {
               ),
             );
             break;
+          case ApiStatus.Loading:
+            debugPrint('Entrou no Loading...');
+            return Column(
+              children: <Widget>[
+                CircularProgressIndicator(
+                  backgroundColor: Colors.blue,
+                ),
+                Text(
+                  controller.s,
+                  style: TextStyle(fontSize: 25),
+                )
+              ],
+            );
+            break;
           default:
-            return Center(child: CircularProgressIndicator());
+            debugPrint('Entrou no Default...');
+            return Center(
+                child: CircularProgressIndicator(
+              backgroundColor: Colors.red,
+            ));
         }
       },
     );

@@ -11,8 +11,7 @@ Future<void> main() async {
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: clientKey,
       masterKey: masterKey,
-      coreStore: await CoreStoreSharedPrefsImp.getInstance(),
-      debug: true);
+      coreStore: await CoreStoreSharedPrefsImp.getInstance());
   SharedPreferences prefs = await SharedPreferences.getInstance();
   if (!prefs.containsKey('id')) {
     prefs.setString('id', Uuid().v1());

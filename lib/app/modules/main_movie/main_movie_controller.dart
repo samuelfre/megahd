@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:megahd/app/models/credits.dart';
 import 'package:megahd/app/models/movie.dart';
@@ -40,7 +41,10 @@ abstract class _MainMovieControllerBase with Store {
   Trailer trailer;
 
   @observable
-  ApiStatus apiStatus = ApiStatus.Loading;
+  String s = 'Valor inicial...';
+
+  @observable
+  ApiStatus apiStatus;
 
   MovieRep movieRep = MovieRep(); //Repositório
   CreditsRep creditsRep = CreditsRep(); //Repositório
@@ -74,6 +78,8 @@ abstract class _MainMovieControllerBase with Store {
 
     if (response.success) {
       if (response.results.isEmpty) {
+        s = 'Entrou no response.results.isEmpty';
+        debugPrint('entrou aquie no isEmpty');
         apiStatus = ApiStatus.Empty;
       } else {
         List listResultos = List();
@@ -85,9 +91,15 @@ abstract class _MainMovieControllerBase with Store {
         _listaComentarios.addAll(listResultos);
         if (_listaComentarios.isNotEmpty)
           apiStatus = ApiStatus.Completed;
-        else if (_listaComentarios.isEmpty) apiStatus = ApiStatus.Empty;
+        else if (_listaComentarios.isEmpty) {
+          s = 'Entrou no _listaComentarios.isEmpty';
+          apiStatus = ApiStatus.Empty;
+        }
       }
-    } else
+    } else {
+      s = 'Entrou no ultimo else';
+      debugPrint('entrou aquie no else');
       apiStatus = ApiStatus.Empty;
+    }
   }
 }

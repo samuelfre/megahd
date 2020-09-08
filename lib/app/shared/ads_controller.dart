@@ -24,11 +24,17 @@ abstract class _AdsControllerBase extends Disposable with Store {
   /// 6 STARTAPP
   ///
   int adsType = 0;
-  int timeToShow = 10;
+  int timeToShow = 15;
   bool forceRepeatAdnetwork = true;
 
   /// Strings dos anuncios
   /// Admob ID's
+  // static String admobAppId =
+  //     Platform.isAndroid ? "ca-app-pub-8977784514247877~5257163206" : "";
+  // static String admobInterstitialId =
+  //     Platform.isAndroid ? "ca-app-pub-8977784514247877/5065591512" : "";
+  // static String admobBannerId =
+  //     Platform.isAndroid ? "ca-app-pub-8977784514247877/6378673183" : "";
   static String admobAppId = Platform.isAndroid ? FirebaseAdMob.testAppId : "";
   static String admobInterstitialId =
       Platform.isAndroid ? InterstitialAd.testAdUnitId : "";
